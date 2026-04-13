@@ -1,0 +1,15 @@
+---
+# k8s/base/configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shopflow-config
+  namespace: shopflow
+data:
+  DB_HOST:     "postgres-service"
+  DB_PORT:     "5432"
+  DB_NAME:     "ecommerce"
+  DB_USER:     "postgres"
+  NODE_ENV:    "production"
+  CORS_ORIGIN: "https://shopflow.example.com"
+  LOG_LEVEL:   "info"

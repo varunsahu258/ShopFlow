@@ -1,0 +1,33 @@
+# docker-compose.ci.yml
+# Overrides for CI environment — used alongside docker-compose.yml
+# docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d --wait
+version: '3.9'
+
+services:
+  backend:
+    environment:
+      NODE_ENV: test
+      JWT_SECRET: ci-test-secret
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:5000/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  frontend:
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  # Headless Chrome for Selenium
+  selenium-chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - "4444:4444"
+    environment:
+      SE_NODE_MAX_SESSIONS: 3
+    shm_size: '2gb'
