@@ -2,7 +2,7 @@
 FROM node:20-alpine AS deps
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --only=production
+RUN --mount=type=cache,target=/root/.npm npm install --omit=dev --no-audit --no-fund --prefer-offline
 
 # ── Stage 2: runtime ──────────────────────────────────────────────────────────
 FROM node:20-alpine AS runtime
